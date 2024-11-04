@@ -11,7 +11,7 @@
 
 #include "clist.h"
 #include "token.h"
-#include "tokenize_test.c"
+
 
 /*
  * For diagnostics; convert a TokenType to a printable string

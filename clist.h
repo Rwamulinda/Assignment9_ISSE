@@ -10,7 +10,8 @@
 #define _CLIST_H_
 
 #include <stdbool.h>
-#include <token.h>
+#include "token.h"
+
 
 // struct _clist is defined in .c file
 typedef struct _clist *CList;

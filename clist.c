@@ -12,6 +12,8 @@
 #include <string.h>
 
 #include "clist.h"
+#include "token.h"
+
 
 #define DEBUG
 
