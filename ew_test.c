@@ -317,6 +317,16 @@ int test_tokenize_input()
   test_assert(strlen(errmsg) != 0);
   test_assert(strcasecmp(errmsg, "Position 3: unexpected character s") == 0);
 
+  test_assert(TOK_tokenize_input("a + a", errmsg, sizeof(errmsg)) == NULL);
+  test_assert(strlen(errmsg) != 0);
+  test_assert(strcasecmp(errmsg, "Position 1: unexpected character a") == 0);
+
+  test_assert(TOK_tokenize_input("3 + b", errmsg, sizeof(errmsg)) == NULL);
+  test_assert(strlen(errmsg) != 0);
+  test_assert(strcasecmp(errmsg, "Position 5: unexpected character b") == 0);
+
+
+
 
 
 
