@@ -16,6 +16,7 @@
 #include "clist.h"
 #include "tokenize.h"
 #include "token.h"
+#include <stddef.h>
 
 
 // Documented in .h file
