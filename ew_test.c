@@ -434,7 +434,8 @@ int test_parse()
   // TODO: Add your code here
 
   // Test with parentheses
-  test_assert(test_parse_once(21, 5, (Token []){{TOK_OPEN_PAREN}, {TOK_VALUE, 3}, {TOK_PLUS}, {TOK_VALUE, 4}, {TOK_CLOSE_PAREN}, {TOK_MULTIPLY}, {TOK_VALUE, 3}, {TOK_END}}));
+  test_assert(test_parse_once(21, 3, (Token []){{TOK_OPEN_PAREN}, {TOK_VALUE, 3}, {TOK_PLUS}, 
+  {TOK_VALUE, 4}, {TOK_CLOSE_PAREN}, {TOK_MULTIPLY}, {TOK_VALUE, 3}, {TOK_END}}));
     
   //
   return 1;
