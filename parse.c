@@ -4,7 +4,7 @@
  * Code that implements a recursive descent parser for arithmetic
  * expressions
  *
- * Author: <Uwase Pauline>
+ * Author: <>
  */
 
 #include <stdio.h>
@@ -35,7 +35,22 @@ static ExprTree primary(CList tokens, char *errmsg, size_t errmsg_sz);
 
 static ExprTree additive(CList tokens, char *errmsg, size_t errmsg_sz)
 {
-  ExprTree ret = NULL;
+  //ExprTree ret = NULL;
+
+  ExprTree ret = multiplicative(tokens, errmsg, errmsg_sz);
+  if (ret == NULL) 
+    return NULL;
+
+  while (TOK_next_type(tokens) == TOK_PLUS || TOK_next_type(tokens) == TOK_MINUS) {
+    TokenType op = TOK_next_type(tokens);
+    TOK_consume(tokens);  // Consume '+' or '-'
+    ExprTree right = multiplicative(tokens, errmsg, errmsg_sz);
+    if (right == NULL) {
+        ET_free(ret);
+        return NULL;
+    }
+    ret = ET_node(op, ret, right);
+    }
 
 
   //
@@ -48,7 +63,24 @@ static ExprTree additive(CList tokens, char *errmsg, size_t errmsg_sz)
 
 static ExprTree multiplicative(CList tokens, char *errmsg, size_t errmsg_sz)
 {
-  ExprTree ret = NULL;
+  //ExprTree ret = NULL;
+
+
+  ExprTree ret = exponential(tokens, errmsg, errmsg_sz);
+  if (ret == NULL) 
+      return NULL;
+
+  while (TOK_next_type(tokens) == TOK_MULTIPLY || TOK_next_type(tokens) == TOK_DIVIDE) {
+      TokenType op = TOK_next_type(tokens);
+      TOK_consume(tokens);  // Consume '*' or '/'
+      ExprTree right = exponential(tokens, errmsg, errmsg_sz);
+      if (right == NULL) {
+          ET_free(ret);
+          return NULL;
+        }
+        ret = ET_node(op, ret, right);
+    }
+
 
 
   //
@@ -61,11 +93,28 @@ static ExprTree multiplicative(CList tokens, char *errmsg, size_t errmsg_sz)
 
 static ExprTree exponential(CList tokens, char *errmsg, size_t errmsg_sz)
 {
-  ExprTree ret = NULL;
+  //ExprTree ret = NULL;
+
+  ExprTree ret = primary(tokens, errmsg, errmsg_sz);
+  if (ret == NULL) 
+      return NULL;
+
+  while (TOK_next_type(tokens) == TOK_POWER) {
+      TOK_consume(tokens);  // Consume '^'
+      ExprTree right = exponential(tokens, errmsg, errmsg_sz);  // Right associative
+      if (right == NULL) {
+          ET_free(ret);
+          return NULL;
+        }
+        ret = ET_node(TOK_POWER, ret, right);
+    }
+
 
 
   //
   // TODO: Add your code here
+
+
   //
 
   return ret;
@@ -82,9 +131,15 @@ static ExprTree primary(CList tokens, char *errmsg, size_t errmsg_sz)
 
   } else if (TOK_next_type(tokens) == TOK_OPEN_PAREN) {
 
-
-  //
-  // TODO: Add your code here
+      TOK_consume(tokens);  // Consume '('
+      ret = additive(tokens, errmsg, errmsg_sz);  // Parse inner expression
+      if (TOK_next_type(tokens) == TOK_CLOSE_PAREN) {
+          TOK_consume(tokens);  // Consume ')'
+      } else {
+          snprintf(errmsg, errmsg_sz, "Expected closing parenthesis");
+          ET_free(ret);
+          return NULL;
+        }
   //
 
   } else if (TOK_next_type(tokens) == TOK_MINUS) {
@@ -99,6 +154,8 @@ static ExprTree primary(CList tokens, char *errmsg, size_t errmsg_sz)
 
   //
   // TODO: Add your code here
+     snprintf(errmsg, errmsg_sz, "Unexpected token: %s", TOK_next(tokens).type);
+     return NULL;
   //
   }
 
@@ -109,7 +166,18 @@ static ExprTree primary(CList tokens, char *errmsg, size_t errmsg_sz)
 
 ExprTree Parse(CList tokens, char *errmsg, size_t errmsg_sz)
 {
+  ExprTree tree = additive(tokens, errmsg, errmsg_sz);
 
+  if (tree == NULL) {
+      return NULL;  // Error already set in errmsg
+  }
+
+    // Ensure we have reached the end of input
+  if (TOK_next_type(tokens) != TOK_END) {
+      snprintf(errmsg, errmsg_sz, "Unexpected token at end");
+      ET_free(tree);
+      return NULL;
+  }
   //
   // TODO: Add your code here
   //

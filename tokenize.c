@@ -56,20 +56,26 @@ CList TOK_tokenize_input(const char *input, char *errmsg, size_t errmsg_sz) {
             i++; // Skip whitespace
             continue;
         }
-        
-        Token token;
 
-        if (isdigit(input[i])) {
-            // Parse number
-            int value = 0;
-            while (isdigit(input[i])) {
-                value = value * 10 + (input[i] - '0');
-                i++;
+        Token token;
+        
+        // Handle numbers (integers and doubles)
+        if (isdigit(input[i]) || input[i] == '.') {
+            char *endptr;
+            double value = strtod(&input[i], &endptr);
+
+            if (endptr == &input[i]) {
+                snprintf(errmsg, errmsg_sz, "Position %zu: Illegal numeric value", i + 1);
+                CL_free(tokens);
+                return NULL;
             }
+
+            // Check if we've consumed any characters for the number
+            i += (endptr - &input[i]);
             token.type = TOK_VALUE;
             token.value = value;
         } else {
-            // Parse operators and parentheses
+            // Handle operators and parentheses
             switch (input[i]) {
                 case '+': token.type = TOK_PLUS; break;
                 case '-': token.type = TOK_MINUS; break;
@@ -79,11 +85,12 @@ CList TOK_tokenize_input(const char *input, char *errmsg, size_t errmsg_sz) {
                 case '(': token.type = TOK_OPEN_PAREN; break;
                 case ')': token.type = TOK_CLOSE_PAREN; break;
                 default:
-                    snprintf(errmsg, errmsg_sz, "Invalid character: %c", input[i]);
+                    // Handle unexpected characters with specific position
+                    snprintf(errmsg, errmsg_sz, "Position %zu: unexpected character %c", i + 1, input[i]);
                     CL_free(tokens);
                     return NULL;
             }
-            token.value = 0;  // Operators don't have a value
+            token.value = 0; // Operators and parentheses don't have a value
             i++;
         }
 
@@ -94,7 +101,7 @@ CList TOK_tokenize_input(const char *input, char *errmsg, size_t errmsg_sz) {
     // Add end-of-input token
     Token end_token = { .type = TOK_END, .value = 0 };
     CL_append(tokens, end_token);
-    
+
     return tokens;
 }
 
@@ -105,17 +112,13 @@ TokenType TOK_next_type(CList tokens) {
     if (CL_length(tokens) == 0) {
         return TOK_END;
     }
-    Token *token = (Token *)CL_head(tokens);
-    return token->type;
+    Token token = CL_nth(tokens, 0);
+    return token.type;
 }
 
 // Documented in .h file
 Token TOK_next(CList tokens) {
-    if (CL_length(tokens) == 0) {
-        Token end_token = { .type = TOK_END, .value = 0 };
-        return end_token;
-    }
-    return *(Token *)CL_head(tokens);
+    return CL_nth(tokens, 0);
 }
 
 
@@ -128,17 +131,17 @@ void TOK_consume(CList tokens) {
 }
 
 
-
+void printToken(int pos, CListElementType element, void* cb_data) {
+  if(element.type == TOK_VALUE) {
+    // TODO: print token type and value
+    printf("Position %d: Token type: VALUE, Value: %g\n", pos, element.value);
+  } else {
+    // TODO: print token type
+    printf("Position %d: Token type: %d\n", pos, element.type);
+  }
+}
 
 // Documented in .h file
 void TOK_print(CList tokens) {
-    CL_foreach(tokens, token) {
-        Token *t = (Token *)token;
-        printf("%s", TT_to_str(t->type));
-        if (t->type == TOK_VALUE) {
-            printf("(%d)", t->value);
-        }
-        printf(" ");
-    }
-    printf("\n");
+    CL_foreach(tokens, printToken, NULL);
 }
