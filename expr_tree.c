@@ -134,7 +134,7 @@ double ET_evaluate(ExprTree tree) {
 // Documented in .h file
 size_t ET_tree2string(ExprTree tree, char *buf, size_t buf_sz) {
     //assert(tree);
-    if (buf_sz == 0 || tree==NULL) return 0;
+    if (buf_sz == 0 || tree == NULL) return 0;
 
     if (tree->type == VALUE) {
         // Use %g to automatically format without unnecessary decimal points for whole numbers
