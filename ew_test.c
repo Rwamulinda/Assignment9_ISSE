@@ -269,6 +269,12 @@ int test_tokenize_input()
       {"  4*5 + 6 ", {{TOK_VALUE, 4}, {TOK_MULTIPLY}, {TOK_VALUE, 5}, {TOK_PLUS}, {TOK_VALUE, 6}, {TOK_END}}},
       {"(3 + 4) * 5", {{TOK_OPEN_PAREN}, {TOK_VALUE, 3}, {TOK_PLUS}, {TOK_VALUE, 4}, {TOK_CLOSE_PAREN}, {TOK_MULTIPLY}, {TOK_VALUE, 5}, {TOK_END}}},
         // Empty inputs
+
+      {"-1 + 2", {{TOK_MINUS}, {TOK_VALUE, 1}, {TOK_PLUS}, {TOK_VALUE, 2}, {TOK_END}}},
+      {"5 * (3 - 4)", {{TOK_VALUE, 5}, {TOK_MULTIPLY}, {TOK_OPEN_PAREN}, {TOK_VALUE, 3}, {TOK_MINUS}, {TOK_VALUE, 4}, {TOK_CLOSE_PAREN}, {TOK_END}}},
+      {"10 / 2 + 3", {{TOK_VALUE, 10}, {TOK_DIVIDE}, {TOK_VALUE, 2}, {TOK_PLUS}, {TOK_VALUE, 3}, {TOK_END}}},
+      {"2 ^ 3", {{TOK_VALUE, 2}, {TOK_POWER}, {TOK_VALUE, 3}, {TOK_END}}},
+      {"3e10 + 1", {{TOK_VALUE, 3e10}, {TOK_PLUS}, {TOK_VALUE, 1}, {TOK_END}}},   
       
   //
       // empty inputs
@@ -303,9 +309,9 @@ int test_tokenize_input()
   //
   // TODO: Add your code here
 
-  test_assert(TOK_tokenize_input("2+(3", errmsg, sizeof(errmsg)) == NULL);
+  test_assert(TOK_tokenize_input("2 + + 3", errmsg, sizeof(errmsg)) == NULL);
   test_assert(strlen(errmsg) != 0);
-  test_assert(strcasecmp(errmsg, "Unexpected token (end)") == 0);
+  test_assert(strcasecmp(errmsg, "Unexpected token PLUS") == 0);
 
   test_assert(TOK_tokenize_input("3 sine", errmsg, sizeof(errmsg)) == NULL);
   test_assert(strlen(errmsg) != 0);
