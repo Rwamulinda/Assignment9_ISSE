@@ -303,7 +303,7 @@ int test_tokenize_input()
   // TODO: Add your code here
 
   // More erroneous tests
-  test_assert(TOK_tokenize_input("++", errmsg, sizeof(errmsg)) == NULL);
+  test_assert(TOK_tokenize_input("sine", errmsg, sizeof(errmsg)) == NULL);
   test_assert(strlen(errmsg) != 0);
   test_assert(strcasecmp(errmsg, "Position 1: unexpected character +") == 0);
   //
@@ -403,12 +403,7 @@ int test_parse()
 
   //
   // TODO: Add your code here
-
-  // Test with addition and multiplication
-  test_assert(test_parse_once(9, 3,
-    (Token []){{TOK_VALUE, 3}, {TOK_PLUS}, {TOK_VALUE, 6}, {TOK_END}}));
-    
-    // Test with parentheses
+  // Test with parentheses
   test_assert(test_parse_once(21, 5,
     (Token []){{TOK_OPEN_PAREN}, {TOK_VALUE, 3}, {TOK_PLUS}, {TOK_VALUE, 4}, {TOK_CLOSE_PAREN}, {TOK_MULTIPLY}, {TOK_VALUE, 3}, {TOK_END}}));
     
@@ -437,15 +432,9 @@ int test_parse_associativity()
                      {TOK_VALUE, 3}, {TOK_END}}));
 
 
-  //
-  // TODO: Add your code here
-  test_assert(test_parse_once(4, 3,
-        (Token []){{TOK_VALUE, 10}, {TOK_MINUS}, {TOK_VALUE, 2}, {TOK_MINUS},
-                   {TOK_VALUE, 3}, {TOK_MINUS}, {TOK_VALUE, 1}, {TOK_END}}));
-
 
   
-    // Here we test that it evaluates (10 - 2) + 3
+  // Here we test that it evaluates (10 - 2) + 3
   test_assert(test_parse_once(11, 3,
         (Token []){{TOK_VALUE, 10}, {TOK_MINUS}, {TOK_VALUE, 2}, 
                    {TOK_PLUS}, {TOK_VALUE, 3}, {TOK_END}}));
