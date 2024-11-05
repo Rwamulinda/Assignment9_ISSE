@@ -154,7 +154,7 @@ static ExprTree primary(CList tokens, char *errmsg, size_t errmsg_sz)
 
   //
   // TODO: Add your code here
-     snprintf(errmsg, errmsg_sz, "Unexpected token: %s", TOK_next(tokens).type);
+     snprintf(errmsg, errmsg_sz, "Unexpected token: %s", TT_to_str(TOK_next(tokens).type));
      return NULL;
   //
   }
