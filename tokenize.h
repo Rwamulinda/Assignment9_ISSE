@@ -3,7 +3,7 @@
  * 
  * Functions to tokenize, and manipulate lists of tokens
  *
- * Author: <your name here>
+ * Author: <Pauline Uwase>
  */
 
 #ifndef _TOKENIZE_H_

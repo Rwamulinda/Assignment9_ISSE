@@ -307,7 +307,7 @@ int test_tokenize_input()
 
 
   //
-  // TODO: Add your code here
+  // add other test cases to test tokenize input
 
   test_assert(TOK_tokenize_input("..3", errmsg, sizeof(errmsg)) == NULL);
   test_assert(strlen(errmsg) != 0);
@@ -429,10 +429,6 @@ int test_parse()
 {
   test_assert( test_parse_once(3.5, 1, (Token []){{TOK_VALUE, 3.5}, {TOK_END}}) );
 
-
-  //
-  // TODO: Add your code here
-
   // Test with parentheses
   test_assert(test_parse_once(21, 3, (Token []){{TOK_OPEN_PAREN}, {TOK_VALUE, 3}, {TOK_PLUS}, 
   {TOK_VALUE, 4}, {TOK_CLOSE_PAREN}, {TOK_MULTIPLY}, {TOK_VALUE, 3}, {TOK_END}}));
@@ -458,8 +454,7 @@ int test_parse_associativity()
                      {TOK_VALUE, 3}, {TOK_END}}));
 
 
-  //
-  // TODO: Add your code here
+
   //Test right associativity for exponentiation
   test_assert(test_parse_once(16, 2,
         (Token []){{TOK_VALUE, 2}, {TOK_POWER}, {TOK_VALUE, 4}, {TOK_END}}));
@@ -487,15 +482,11 @@ int test_parse_errors()
   test_assert( test_parse_err_once((Token [])
           {{TOK_VALUE, 2}, {TOK_PLUS}, {TOK_PLUS}, {TOK_VALUE, 3}, {TOK_END}}));
 
-
-  //
-  // TODO: Add your code here
-
-  // 3 + (2 *
+  // new test case of 3 + (2 *
   test_assert(test_parse_err_once((Token [])
         {{TOK_VALUE, 3}, {TOK_PLUS}, {TOK_OPEN_PAREN}, {TOK_VALUE, 2}, {TOK_MULTIPLY}, {TOK_END}}));
 
-// 3 + ) 2
+// new test case of 3 + ) 2
   test_assert(test_parse_err_once((Token [])
         {{TOK_VALUE, 3}, {TOK_PLUS}, {TOK_CLOSE_PAREN}, {TOK_VALUE, 2}, {TOK_END}}));
 

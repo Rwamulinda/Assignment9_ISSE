@@ -3,7 +3,7 @@
  * 
  * Simple description
  *
- * Author: <your name here>
+ * Author: <Uwase Pauline>
  */
 
 

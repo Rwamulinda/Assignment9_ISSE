@@ -4,7 +4,7 @@
  * Code that implements a recursive descent parser for arithmetic
  * expressions
  *
- * Author: <>
+ * Author: <Uwase Pauline>
  */
 
 #include <stdio.h>
@@ -56,11 +56,6 @@ static ExprTree additive(CList tokens, char *errmsg, size_t errmsg_sz)
       ret = ET_node(OP_SUB, ret, right);
   }
 
-
-  //
-  // TODO: Add your code here
-  //
-
   return ret;
 }
 
@@ -92,10 +87,7 @@ static ExprTree multiplicative(CList tokens, char *errmsg, size_t errmsg_sz)
 
 
 
-  //
-  // TODO: Add your code here
-  //
-
+  
   return ret;
 }
 
@@ -120,12 +112,7 @@ static ExprTree exponential(CList tokens, char *errmsg, size_t errmsg_sz)
 
 
 
-  //
-  // TODO: Add your code here
-
-
-  //
-
+  
   return ret;
 }
 
