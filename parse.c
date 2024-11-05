@@ -77,6 +77,7 @@ static ExprTree multiplicative(CList tokens, char *errmsg, size_t errmsg_sz)
   while (TOK_next_type(tokens) == TOK_MULTIPLY || TOK_next_type(tokens) == TOK_DIVIDE) {
       TokenType op = TOK_next_type(tokens);
       TOK_consume(tokens);  // Consume '*' or '/'
+  
       ExprTree right = exponential(tokens, errmsg, errmsg_sz);
       if (right == NULL) {
           ET_free(ret);
@@ -144,7 +145,7 @@ static ExprTree primary(CList tokens, char *errmsg, size_t errmsg_sz)
       if (TOK_next_type(tokens) == TOK_CLOSE_PAREN) {
           TOK_consume(tokens);  // Consume ')'
       } else {
-          snprintf(errmsg, errmsg_sz, "Expected closing parenthesis");
+          snprintf(errmsg, errmsg_sz, "Unexpected token %s", TT_to_str(TOK_next_type(tokens)));
           ET_free(ret);
           return NULL;
         }
@@ -159,12 +160,8 @@ static ExprTree primary(CList tokens, char *errmsg, size_t errmsg_sz)
     ret = ET_node(UNARY_NEGATE, ret, NULL);
 
   } else {
-
-  //
-  // TODO: Add your code here
-     snprintf(errmsg, errmsg_sz, "Unexpected token %s", TT_to_str(TOK_next(tokens).type));
-     return NULL;
-  //
+    snprintf(errmsg, errmsg_sz, "Unexpected token %s", TT_to_str(TOK_next(tokens).type));
+    return NULL;
   }
 
 
