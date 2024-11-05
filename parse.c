@@ -162,7 +162,7 @@ static ExprTree primary(CList tokens, char *errmsg, size_t errmsg_sz)
 
   //
   // TODO: Add your code here
-     snprintf(errmsg, errmsg_sz, "Unexpected token: %s", TT_to_str(TOK_next(tokens).type));
+     snprintf(errmsg, errmsg_sz, "Unexpected token %s", TT_to_str(TOK_next(tokens).type));
      return NULL;
   //
   }
@@ -182,7 +182,7 @@ ExprTree Parse(CList tokens, char *errmsg, size_t errmsg_sz)
 
     // Ensure we have reached the end of input
   if (TOK_next_type(tokens) != TOK_END) {
-      snprintf(errmsg, errmsg_sz, "Unexpected token at end");
+      snprintf(errmsg, errmsg_sz, "Syntax error on token %s", TT_to_str(TOK_next_type(tokens)));
       ET_free(tree);
       return NULL;
   }
