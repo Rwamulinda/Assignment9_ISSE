@@ -169,7 +169,7 @@ ExprTree Parse(CList tokens, char *errmsg, size_t errmsg_sz)
   ExprTree tree = additive(tokens, errmsg, errmsg_sz);
 
   if (tree == NULL) {
-      return NULL;  // Error already set in errmsg
+    return NULL;  // Error already set in errmsg
   }
 
     // Ensure we have reached the end of input
@@ -178,7 +178,4 @@ ExprTree Parse(CList tokens, char *errmsg, size_t errmsg_sz)
       ET_free(tree);
       return NULL;
   }
-  //
-  // TODO: Add your code here
-  //
 }
