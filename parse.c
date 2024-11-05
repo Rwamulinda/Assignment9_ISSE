@@ -49,8 +49,12 @@ static ExprTree additive(CList tokens, char *errmsg, size_t errmsg_sz)
         ET_free(ret);
         return NULL;
     }
-    ret = ET_node(op, ret, right);
-    }
+
+    if(op == TOK_PLUS)
+      ret = ET_node(OP_ADD, ret, right);
+    else
+      ret = ET_node(OP_SUB, ret, right);
+  }
 
 
   //
@@ -77,8 +81,12 @@ static ExprTree multiplicative(CList tokens, char *errmsg, size_t errmsg_sz)
       if (right == NULL) {
           ET_free(ret);
           return NULL;
-        }
-        ret = ET_node(op, ret, right);
+      }
+
+      if(op == TOK_MULTIPLY)
+        ret = ET_node(OP_MUL, ret, right);
+      else
+        ret = ET_node(OP_DIV, ret, right);
     }
 
 
@@ -106,7 +114,7 @@ static ExprTree exponential(CList tokens, char *errmsg, size_t errmsg_sz)
           ET_free(ret);
           return NULL;
         }
-        ret = ET_node(TOK_POWER, ret, right);
+        ret = ET_node(OP_POWER, ret, right);
     }
 
 
