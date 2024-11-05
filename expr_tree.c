@@ -133,60 +133,30 @@ double ET_evaluate(ExprTree tree) {
 
 
 
+// Documented in .h file
 size_t ET_tree2string(ExprTree tree, char *buf, size_t buf_sz) {
+    //assert(tree);
     if (buf_sz == 0 || tree == NULL) return 0;
 
-    // Handle VALUE nodes
     if (tree->type == VALUE) {
-        if (tree->n.value < 0) {
-            // Wrap negative values in parentheses
-            return snprintf(buf, buf_sz, "(%g)", tree->n.value);
-        } else {
-            return snprintf(buf, buf_sz, "%g", tree->n.value);
-        }
+        // Use %g to automatically format without unnecessary decimal points for whole numbers
+        return snprintf(buf, buf_sz, "(%g)", tree->n.value);
     }
 
-    // Get the operator as a character
     char op = ExprNodeType_to_char(tree->type);
+    
+    size_t left_len = ET_tree2string(tree->n.child[LEFT], buf, buf_sz);
+    if (left_len >= buf_sz - 1) return left_len;
 
-    // Buffer offset to track length
-    size_t len = 0;
+    buf[left_len] = op; // Add the operator
+    buf[left_len + 1] = '\0'; // Null terminate after operator
+    size_t right_len = ET_tree2string(tree->n.child[RIGHT], buf + left_len + 1, buf_sz - left_len - 1);
 
-    // Add opening parenthesis for the entire expression
-    if (buf_sz > 1) {
-        buf[len++] = '(';
+    if (right_len + left_len + 1 >= buf_sz) {
+        buf[buf_sz - 1] = '$'; // Indicate truncation with '$'
+        buf[buf_sz - 2] = '\0'; // Ensure the buffer is null-terminated
+        return buf_sz - 1; // Return size indicating truncation
     }
 
-    // Process left child and update buffer
-    size_t left_len = ET_tree2string(tree->n.child[LEFT], buf + len, buf_sz - len);
-    len += left_len;
-    if (len >= buf_sz - 1) return len;
-
-    // Add the operator after left expression
-    if (len < buf_sz - 1) {
-        buf[len++] = op;
-    }
-
-    // Process right child and update buffer
-    size_t right_len = ET_tree2string(tree->n.child[RIGHT], buf + len, buf_sz - len);
-    len += right_len;
-    if (len >= buf_sz - 1) return len;
-
-    // Close the parenthesis for the entire expression
-    if (len < buf_sz - 1) {
-        buf[len++] = ')';
-    }
-
-    // Ensure null termination
-    buf[len] = '\0';
-
-    // Check for buffer overflow
-    if (len >= buf_sz) {
-        buf[buf_sz - 1] = '$'; // Indicate truncation
-        buf[buf_sz - 2] = '\0';
-        return buf_sz - 1;
-    }
-
-    return len;
+    return left_len + 1 + right_len; // Return total length of the string
 }
-
