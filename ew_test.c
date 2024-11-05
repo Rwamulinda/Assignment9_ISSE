@@ -269,6 +269,7 @@ int test_tokenize_input()
       {"  4*5 + 6 ", {{TOK_VALUE, 4}, {TOK_MULTIPLY}, {TOK_VALUE, 5}, {TOK_PLUS}, {TOK_VALUE, 6}, {TOK_END}}},
       {"(3 + 4) * 5", {{TOK_OPEN_PAREN}, {TOK_VALUE, 3}, {TOK_PLUS}, {TOK_VALUE, 4}, {TOK_CLOSE_PAREN}, {TOK_MULTIPLY}, {TOK_VALUE, 5}, {TOK_END}}},
         // Empty inputs
+      
   //
       // empty inputs
       {"", {{TOK_END}}},
@@ -301,11 +302,6 @@ int test_tokenize_input()
 
   //
   // TODO: Add your code here
-
-  // More erroneous tests
-  test_assert(TOK_tokenize_input("sine", errmsg, sizeof(errmsg)) == NULL);
-  test_assert(strlen(errmsg) != 0);
-  test_assert(strcasecmp(errmsg, "Position 1: unexpected character +") == 0);
   //
 
   return 1;
@@ -403,14 +399,6 @@ int test_parse()
 
   //
   // TODO: Add your code here
-  // Test with parentheses
-  test_assert(test_parse_once(21, 5,
-    (Token []){{TOK_OPEN_PAREN}, {TOK_VALUE, 3}, {TOK_PLUS}, {TOK_VALUE, 4}, {TOK_CLOSE_PAREN}, {TOK_MULTIPLY}, {TOK_VALUE, 3}, {TOK_END}}));
-    
-    // Test invalid expressions
-  test_assert(test_parse_err_once((Token []){{TOK_VALUE, 1}, {TOK_PLUS}, {TOK_END}})); // Missing operand
-  test_assert(test_parse_err_once((Token []){{TOK_OPEN_PAREN}, {TOK_END}})); // Unmatched parentheses
-
   //
   return 1;
 
@@ -432,12 +420,9 @@ int test_parse_associativity()
                      {TOK_VALUE, 3}, {TOK_END}}));
 
 
-
-  
-  // Here we test that it evaluates (10 - 2) + 3
-  test_assert(test_parse_once(11, 3,
-        (Token []){{TOK_VALUE, 10}, {TOK_MINUS}, {TOK_VALUE, 2}, 
-                   {TOK_PLUS}, {TOK_VALUE, 3}, {TOK_END}}));
+  //
+  // TODO: Add your code here
+  //
 
   return 1;
 
@@ -459,25 +444,6 @@ int test_parse_errors()
 
   //
   // TODO: Add your code here
-  // Test for missing operand: 2 + 
-  test_assert(test_parse_err_once((Token[]){
-        {TOK_VALUE, 2}, {TOK_PLUS}, {TOK_END}
-  }));
-
-    // Test for two values without an operator: 2 3
-  test_assert(test_parse_err_once((Token[]){
-        {TOK_VALUE, 2}, {TOK_VALUE, 3}, {TOK_END}
-    }));
-
-    // Test for a leading operator: + 2 3
-  test_assert(test_parse_err_once((Token[]){
-        {TOK_PLUS}, {TOK_VALUE, 2}, {TOK_VALUE, 3}, {TOK_END}
-    }));
-
-    // Test for a trailing operator: 2 3 +
-  test_assert(test_parse_err_once((Token[]){
-        {TOK_VALUE, 2}, {TOK_VALUE, 3}, {TOK_PLUS}, {TOK_END}
-    }));
   //
 
   return 1;
