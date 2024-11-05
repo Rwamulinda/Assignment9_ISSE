@@ -139,11 +139,24 @@ size_t ET_tree2string(ExprTree tree, char *buf, size_t buf_sz) {
     if (buf_sz == 0 || tree == NULL) return 0;
 
     if (tree->type == VALUE) {
+
+        // Check if the value is negative and format with parentheses if needed
+        if (tree->n.value < 0) {
+            return snprintf(buf, buf_sz, "(%g)", tree->n.value);
+        } else {
+            return snprintf(buf, buf_sz, "%g", tree->n.value);
+        }
         // Use %g to automatically format without unnecessary decimal points for whole numbers
-        return snprintf(buf, buf_sz, "%g", tree->n.value);
+      //  return snprintf(buf, buf_sz, "(%g)", tree->n.value);
     }
 
     char op = ExprNodeType_to_char(tree->type);
+
+    // Reserve space for parentheses
+    size_t len = 0;
+    if (buf_sz > 1) {
+        buf[len++] = '(';  // Add opening parenthesis
+    }
     
     size_t left_len = ET_tree2string(tree->n.child[LEFT], buf, buf_sz);
     if (left_len >= buf_sz - 1) return left_len;
