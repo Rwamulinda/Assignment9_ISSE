@@ -495,7 +495,9 @@ int test_parse_errors()
   test_assert(test_parse_err_once((Token [])
         {{TOK_VALUE, 3}, {TOK_PLUS}, {TOK_OPEN_PAREN}, {TOK_VALUE, 2}, {TOK_MULTIPLY}, {TOK_END}}));
 
-  //
+// 3 + ) 2
+  test_assert(test_parse_err_once((Token [])
+        {{TOK_VALUE, 3}, {TOK_PLUS}, {TOK_CLOSE_PAREN}, {TOK_VALUE, 2}, {TOK_END}}));
 
   return 1;
 
