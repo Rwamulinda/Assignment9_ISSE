@@ -325,6 +325,11 @@ int test_tokenize_input()
   test_assert(strlen(errmsg) != 0);
   test_assert(strcasecmp(errmsg, "Position 5: unexpected character b") == 0);
 
+  test_assert(TOK_tokenize_input("3 + 5 * 2 + (24-12) Token", errmsg, sizeof(errmsg)) == NULL);
+  test_assert(strlen(errmsg) != 0);
+  test_assert(strcasecmp(errmsg, "Position 21: unexpected character T") == 0);
+
+
 
 
 
@@ -427,6 +432,10 @@ int test_parse()
 
   //
   // TODO: Add your code here
+
+  // Test with parentheses
+  test_assert(test_parse_once(21, 5, (Token []){{TOK_OPEN_PAREN}, {TOK_VALUE, 3}, {TOK_PLUS}, {TOK_VALUE, 4}, {TOK_CLOSE_PAREN}, {TOK_MULTIPLY}, {TOK_VALUE, 3}, {TOK_END}}));
+    
   //
   return 1;
 
