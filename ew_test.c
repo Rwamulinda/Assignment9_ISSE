@@ -305,7 +305,7 @@ int test_tokenize_input()
 
   test_assert(TOK_tokenize_input("2 + (3 * 4", errmsg, sizeof(errmsg)) == NULL);
   test_assert(strlen(errmsg) != 0);
-  test_assert(strcasecmp(errmsg, "Position 7: unexpected end") == 0);
+  test_assert(strcasecmp(errmsg, "Position 1: unexpected character") == 0);
 
   test_assert(TOK_tokenize_input("3 sine", errmsg, sizeof(errmsg)) == NULL);
   test_assert(strlen(errmsg) != 0);
