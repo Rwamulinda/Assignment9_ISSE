@@ -318,7 +318,7 @@ int test_tokenize_input()
  * 
  * Returns: 1 if the test passes, 0 otherwise
  */
-/*int test_parse_once(double exp_value, int exp_depth, const Token token_arr[])
+int test_parse_once(double exp_value, int exp_depth, const Token token_arr[])
 {
   CList tokens = NULL;
   ExprTree tree = NULL;
@@ -342,7 +342,8 @@ int test_tokenize_input()
   ET_free(tree);
 
   return ret;
-}*/
+}
+
 
 /*
  * Runs the parser on one test case that is expected to result in an
@@ -354,7 +355,7 @@ int test_tokenize_input()
  * 
  * Returns: 1 if the test passes, 0 otherwise
  */
-/*int test_parse_err_once(const Token token_arr[])
+int test_parse_err_once(const Token token_arr[])
 {
   CList tokens = NULL;
   ExprTree tree = NULL;
