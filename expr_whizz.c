@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
       goto loop_end;
       
     // uncomment for more debug info
-    // TOK_print(tokens);
+    TOK_print(tokens);
 
     tree = Parse(tokens, errmsg, sizeof(errmsg));
 
