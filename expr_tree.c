@@ -112,7 +112,9 @@ int ET_depth(ExprTree tree) {
 
 // Documented in .h file
 double ET_evaluate(ExprTree tree) {
-    assert(tree);
+    //assert(tree);
+    if (tree == NULL) return 0;
+    
     if (tree->type == VALUE) return tree->n.value;
 
     double left_val = ET_evaluate(tree->n.child[LEFT]);
