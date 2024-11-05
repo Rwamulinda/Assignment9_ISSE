@@ -464,6 +464,11 @@ int test_parse_associativity()
   test_assert(test_parse_once(16, 2,
         (Token []){{TOK_VALUE, 2}, {TOK_POWER}, {TOK_VALUE, 4}, {TOK_END}}));
 
+  // Test with parentheses
+  test_assert(test_parse_once(21, 5,
+        (Token []){{TOK_OPEN_PAREN}, {TOK_VALUE, 3}, {TOK_PLUS}, {TOK_VALUE, 4}, {TOK_CLOSE_PAREN}, {TOK_MULTIPLY}, {TOK_VALUE, 3}, {TOK_END}}));
+    
+
    // Test invalid expressions
   test_assert(test_parse_err_once((Token []){{TOK_VALUE, 1}, {TOK_PLUS}, {TOK_END}})); // Missing operand
   test_assert(test_parse_err_once((Token []){{TOK_OPEN_PAREN}, {TOK_END}})); // Unmatched parentheses      
