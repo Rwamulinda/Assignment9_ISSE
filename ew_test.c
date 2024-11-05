@@ -462,7 +462,11 @@ int test_parse_associativity()
   // TODO: Add your code here
   //Test right associativity for exponentiation
   test_assert(test_parse_once(16, 3,
-      (Token []){{TOK_VALUE, 2}, {TOK_POWER}, {TOK_VALUE, 4}, {TOK_END}}));
+        (Token []){{TOK_VALUE, 2}, {TOK_POWER}, {TOK_VALUE, 4}, {TOK_END}}));
+
+   // Test invalid expressions
+  test_assert(test_parse_err_once((Token []){{TOK_VALUE, 1}, {TOK_PLUS}, {TOK_END}})); // Missing operand
+  test_assert(test_parse_err_once((Token []){{TOK_OPEN_PAREN}, {TOK_END}})); // Unmatched parentheses      
 
   //
 
