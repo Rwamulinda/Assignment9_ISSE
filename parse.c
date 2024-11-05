@@ -178,4 +178,5 @@ ExprTree Parse(CList tokens, char *errmsg, size_t errmsg_sz)
       ET_free(tree);
       return NULL;
   }
+  return tree;
 }
