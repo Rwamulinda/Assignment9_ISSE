@@ -100,7 +100,7 @@ int ET_count(ExprTree tree)
 
 // Documented in .h file
 int ET_depth(ExprTree tree) {
-    assert(tree);
+    if (tree == NULL) return 0;
     if (tree->type == VALUE) return 1;
 
     int left_depth = ET_depth(tree->n.child[LEFT]);
