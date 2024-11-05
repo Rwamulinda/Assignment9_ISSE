@@ -135,10 +135,10 @@ void TOK_consume(CList tokens) {
 void printToken(int pos, CListElementType element, void* cb_data) {
   if(element.type == TOK_VALUE) {
     // TODO: print token type and value
-    printf("Position %d: Token type: VALUE, Value: %g\n", pos, TT_to_str(element.value));
+    printf("Position %d: Token type: %s, Value: %g\n", pos, TT_to_str(element.type), element.value);
   } else {
     // TODO: print token type
-    printf("Position %d: Token type: %d\n", pos, TT_to_str(element.type));
+    printf("Position %d: Token type: %s\n", pos, TT_to_str(element.type));
   }
 }
 
